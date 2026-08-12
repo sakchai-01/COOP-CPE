@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard นักศึกษา - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/student_dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .alert-success {
+            background: #dcfce7; color: #166534; padding: 15px 25px; border-radius: 12px;
+            margin-bottom: 25px; font-weight: 600; display: {{ 'block' if match_success else 'none' }};
+            width: 90%; max-width: 900px; text-align: center; border: 1px solid #bbf7d0;
+        }
+        #uploadToast {
+            display: {{ 'flex' if upload_success else 'none' }};
+            position: fixed; top: 25px; right: 25px; z-index: 9999; background: white;
+            border-left: 5px solid #22c55e; border-radius: 14px; padding: 18px 22px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12); align-items: center; gap: 14px; min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="uploadToast">
+        <div style="background: #dcfce7; color: #166534; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <div style="font-weight: 700; color: #166534; font-size: 15px;">ส่งไฟล์สำเร็จ!</div>
+            <div style="font-size: 13px; color: #4b5563;">ไฟล์ถูกอัปโหลดเรียบร้อยแล้ว รอการตรวจสอบจากอาจารย์</div>
+        </div>
+    </div>
+
+    <header class="dashboard-header">
+        <div class="header-inner">
+            <img src="/logo.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="alert-success" id="successAlert">
+            🎉 บันทึกข้อมูลเพื่อทำการ MATCH เรียบร้อยแล้วครับ!
+        </div>
+
+        <!-- Progress Timeline -->
+        <div class="timeline-section">
+            <div class="timeline-title">
+                <i class="fa-solid fa-bars-staggered"></i> สถานะการดำเนินงานพิกัด (นักศึกษา: {{ user.username }})
+            </div>
+            <div class="timeline-container">
+                <div class="progress-line-fill" style="width: calc({{ progress_pct }}% - 40px);"></div>
+                
+                <div class="timeline-step {{ 'completed' if current_step > 1 else ('active' if current_step == 1 else '') }}">
+                    <div class="step-icon"><i class="fa-solid {{ 'fa-check' if current_step > 1 else 'fa-user-pen' }}"></i></div>
+                    <div class="step-label">กรอกประวัติ<br>& AI Match</div>
+                </div>
+                
+                <div class="timeline-step {{ 'completed' if current_step > 2 else ('active' if current_step == 2 else '') }}">
+                    <div class="step-icon"><i class="fa-solid {{ 'fa-check' if current_step > 2 else 'fa-file-arrow-up' }}"></i></div>
+                    <div class="step-label">ยื่นเอกสาร<br>สหกิจ</div>
+                </div>
+                
+                <div class="timeline-step {{ 'completed' if current_step > 3 else ('active' if current_step == 3 else '') }}">
+                    <div class="step-icon"><i class="fa-solid {{ 'fa-check' if current_step > 3 else 'fa-magnifying-glass' }}"></i></div>
+                    <div class="step-label">อาจารย์<br>ตรวจสอบเอกสาร</div>
+                </div>
+                
+                <div class="timeline-step {{ 'completed' if current_step == 4 else '' }}">
+                    <div class="step-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div class="step-label">พร้อมออกฝึก<br>สหกิจศึกษา</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-grid">
+            <!-- Card 1: AI matching -->
+            <div class="menu-card">
+                <div class="card-img">
+                    <img src="/std_menu_ai.png" alt="AI Matching">
+                </div>
+                <a href="/ai_match_input.php" class="card-btn">AI matching</a>
+            </div>
+
+            <!-- Card 2: ข้อมูลสถานประกอบการ -->
+            <div class="menu-card">
+                <div class="card-img">
+                    <img src="/std_menu_company.png" alt="Company Info">
+                </div>
+                <a href="/company_info.php" class="card-btn">ข้อมูล<br>สถานประกอบการ</a>
+            </div>
+
+            <!-- Card 3: ยื่นเอกสารสำหรับฝึกสหกิจ -->
+            <div class="menu-card">
+                <div class="card-img">
+                    <img src="/std_menu_doc.png" alt="Submit Docs">
+                </div>
+                <a href="/submit_docs.php" class="card-btn">ยื่นเอกสาร<br>สำหรับฝึกสหกิจ</a>
+            </div>
+        </div>
+
+        <div class="logout-wrapper" style="display: flex; gap: 20px;">
+            <a href="/" class="btn-logout" style="background: #ffffff; color: var(--primary-blue); border: 2px solid var(--primary-blue);">
+                <i class="fa-solid fa-house"></i> กลับหน้าหลัก
+            </a>
+            <a href="/logout" class="btn-logout" style="background: #ef4444; border: none;">
+                <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+            </a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ผลการ MATCH สถานประกอบการ - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/ai_match.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .match-main { padding-top: 20px; }
+        
+        /* Criteria Explanation Box */
+        .criteria-box {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        .criteria-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--secondary-blue);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .criteria-card {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 18px 20px;
+            border-left: 5px solid #0ea5e9;
+        }
+        .criteria-card.chance {
+            border-left-color: #10b981;
+        }
+        .criteria-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #0b1f3c;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .criteria-list {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.7;
+            padding-left: 20px;
+            margin: 0;
+        }
+        @media (max-width: 768px) {
+            .criteria-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="dashboard-header">
+        <div class="header-inner">
+            <img src="/logo.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="result-nav">
+        <div class="container" style="display: flex; justify-content: center; align-items: center;">
+            <div style="color: var(--secondary-blue); font-weight: 700; font-size: 16px;">
+                <i class="fa-solid fa-robot"></i> ผลการ MATCH สถานประกอบการ 4 อันดับแรก โดยระบบ AI
+            </div>
+        </div>
+    </div>
+
+    <main class="match-main">
+        <div class="container">
+            <div class="result-container">
+
+                <!-- Criteria Explanation Box -->
+                <div class="criteria-box">
+                    <div class="criteria-header">
+                        <i class="fa-solid fa-calculator" style="color: #0ea5e9;"></i>
+                        เกณฑ์การคำนวณคะแนน MATCH (Scoring Criteria)
+                    </div>
+                    <div class="criteria-grid">
+                        <div class="criteria-card">
+                            <div class="criteria-title">
+                                <i class="fa-solid fa-bullseye" style="color: #0ea5e9;"></i>
+                                ความเหมาะสม (Match Score %)
+                            </div>
+                            <ul class="criteria-list">
+                                <li><strong>ความสอดคล้องของทักษะ (35%):</strong> เปรียบเทียบ Hard Skills & Soft Skills ที่ระบุกับความต้องการของบริษัท</li>
+                                <li><strong>สายงานที่สนใจ (30%):</strong> ตรวจสอบความตรงกันของสายงานที่นักศึกษาสนใจกับตำแหน่งที่เปิดรับ</li>
+                                <li><strong>สาขาวิชาเอก (20%):</strong> ความตรงสายของวิชาเอก (ซอฟต์แวร์ / โรบอท / ไซเบอร์) กับประเภทงาน</li>
+                                <li><strong>รูปแบบการทำงาน (15%):</strong> ความสอดคล้องของรูปแบบการทำงาน (Hybrid / Onsite / Remote)</li>
+                            </ul>
+                        </div>
+
+                        <div class="criteria-card chance">
+                            <div class="criteria-title">
+                                <i class="fa-solid fa-chart-line" style="color: #10b981;"></i>
+                                โอกาสที่จะได้ฝึกงาน (Chance Score %)
+                            </div>
+                            <ul class="criteria-list">
+                                <li><strong>เกรดเฉลี่ยสะสม (50%):</strong> คำนวณจากเกรด GPA (ผ่านเกณฑ์สหกิจ 2.00 ขึ้นไป ยิ่งสูงยิ่งมีโอกาสรับสูง)</li>
+                                <li><strong>ความสมบูรณ์ของทักษะ (35%):</strong> อัตราส่วนความครบถ้วนของทักษะที่ตรงตามคุณสมบัติที่บริษัทระบุ</li>
+                                <li><strong>อัตราโควตาที่รับ (15%):</strong> จำนวนอัตราส่วนการรับเข้าฝึกของสถานประกอบการ</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Matched Cards Grid -->
+                <div class="result-grid">
+                    {% for m in matches[:4] %}
+                        <div class="result-card">
+                            <div class="card-header-row">
+                                <div class="card-num">{{ loop.index }}</div>
+                                <div class="company-name">{{ m.company_name }}</div>
+                            </div>
+                            
+                            <div class="card-content">
+                                <!-- Left: Scores -->
+                                <div class="score-box">
+                                    <div class="score-row">
+                                        <div class="score-label">ความเหมาะสม</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: {{ m.match_score }}%">{{ m.match_score }}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="score-row">
+                                        <div class="score-label">โอกาสที่จะได้ฝึกงาน</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: {{ m.chance_score }}%; background: linear-gradient(90deg, #10b981, #059669);">{{ m.chance_score }}%</div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 15px; font-size: 13px; color: #64748b;">
+                                        <div><i class="fa-solid fa-location-dot"></i> ตำแหน่ง: {{ m.position or 'ไม่ระบุ' }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Reasoning -->
+                                <div class="reasoning-box">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                        <div class="detail-header" style="margin-bottom: 0;">เหตุผลสนับสนุนจาก AI</div>
+                                        {% if m.comp_id or m.company_id %}
+                                            <a href="/company_info.php" style="font-size: 12px; color: #0369a1; text-decoration: none; font-weight: 700; background: white; padding: 3px 10px; border-radius: 6px; border: 1px solid #bae6fd;">
+                                                ดูข้อมูลบริษัท <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="reasoning-content">
+                                        {{ m.reason or m.reasoning }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+                    <a href="/student_dashboard.php" class="btn-nav-back" style="padding: 15px 50px; font-size: 16px;">
+                        <i class="fa-solid fa-house"></i> กลับไปยังหน้าหลัก
+                    </a>
+                    <p style="margin-top: 15px; color: #64748b; font-size: 13px;">* คุณสามารถกลับมาดูผลการ MATCH นี้ได้ตลอดเวลาจากหน้าหลัก</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

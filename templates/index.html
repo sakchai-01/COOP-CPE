@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบสหกิจศึกษา - Cooperative Education System</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="top-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <img src="/logo.png" alt="Logo" class="logo">
+                <div class="site-title">
+                    <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                    <h2>Cooperative Education System Faculty of Engineering and Industrial Technology</h2>
+                </div>
+            </div>
+            <div class="login-area">
+                {% if user %}
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="font-weight: 500; font-size: 14px; color: #ffffff;">
+                            <i class="fa-solid fa-user-circle"></i> {{ user.username }}
+                            <small>({{ user.role | capitalize }})</small>
+                        </span>
+                        <a href="/{{ user.role }}_dashboard.php" class="btn-login" style="background: #A1C4D8; color: #0b1f3c; border: none; padding: 7px 18px; font-size: 13px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                            <i class="fa-solid fa-gauge"></i> แดชบอร์ด
+                        </a>
+                        <a href="/logout" class="btn-login" style="background: #f14848ff; color: white; padding: 7px 12px; font-size: 13px; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);">ออกจากระบบ</a>
+                    </div>
+                {% else %}
+                    <a href="/login" class="btn-login">เข้าสู่ระบบ</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="/" class="active">หน้าหลัก</a></li>
+                <li><a href="/coop_info.php">สหกิจศึกษา</a></li>
+                <li><a href="/download.php">ดาวน์โหลด</a></li>
+                <li><a href="/contact.php">ติดต่อสอบถาม</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero-banner">
+        <div class="container hero-content">
+            <h2>ระบบสหกิจศึกษา</h2>
+            <p>Cooperative Education System</p>
+        </div>
+    </section>
+
+    <main class="container main-content" style="margin-top: 40px; margin-bottom: 60px;">
+        <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px;">
+            <!-- Left Column -->
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <div class="card">
+                    <div class="card-header bg-navy-medium">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h3>เกี่ยวกับสหกิจศึกษา</h3>
+                    </div>
+                    <div class="card-body" style="padding: 25px;">
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">สหกิจศึกษา (Cooperative Education) คือ ระบบการศึกษาที่ผสมผสานการเรียนในมหาวิทยาลัยกับการปฏิบัติงานจริงในสถานประกอบการ เพื่อเตรียมความพร้อมให้นักศึกษาก่อนเข้าสู่โลกแห่งการทำงานจริง</p>
+                        <a href="/coop_info.php" class="btn-primary">ดูเพิ่มเติม <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-navy-medium">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <h3>ปฏิทินกิจกรรม</h3>
+                    </div>
+                    <div class="card-body" style="padding: 25px; display: flex; gap: 20px; align-items: flex-start;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2370/2370264.png" alt="Calendar Icon" style="width: 150px; opacity: 0.8;">
+                        <ul style="list-style: none; color: var(--text-muted); font-size: 14px;">
+                            <li style="margin-bottom: 10px;"><i class="fa-solid fa-circle" style="font-size: 6px; color: var(--navy-medium); margin-right: 10px;"></i> อบรมก่อนออกสหกิจ</li>
+                            <li style="margin-bottom: 10px;"><i class="fa-solid fa-circle" style="font-size: 6px; color: var(--navy-medium); margin-right: 10px;"></i> รับสมัครงานสหกิจ</li>
+                            <li style="margin-bottom: 10px;"><i class="fa-solid fa-circle" style="font-size: 6px; color: var(--navy-medium); margin-right: 10px;"></i> ประกาศผลคัดเลือก</li>
+                        </ul>
+                    </div>
+                    <div style="padding: 0 25px 25px;">
+                        <a href="/calendar.php" class="btn-primary">ไปที่ปฏิทิน <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <div class="card">
+                    <div class="card-header bg-navy-medium">
+                        <i class="fa-solid fa-book"></i>
+                        <h3>คู่มือสหกิจศึกษา</h3>
+                    </div>
+                    <div class="card-body" style="padding: 25px; text-align: center;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3342/3342137.png" alt="Handbook Icon" style="width: 100px; margin-bottom: 20px; opacity: 0.9;">
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">ดาวน์โหลดคู่มือสหกิจศึกษาเพื่อทำความเข้าใจขั้นตอนและระเบียบปฏิบัติ</p>
+                        <a href="/static/001_coop-handbook (1).pdf" target="_blank" class="btn-primary" style="justify-content: center;">
+                            <i class="fa-solid fa-file-pdf"></i> เปิดดูคู่มือสหกิจศึกษา
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-navy-medium">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                        <h3>ดาวน์โหลดเอกสารสหกิจ</h3>
+                    </div>
+                    <div class="card-body" style="padding: 20px 25px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                                <span style="font-weight: 600;">เอกสารก่อนออกสหกิจ</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                                <span style="font-weight: 600;">เอกสารระหว่างสหกิจ</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                                <span style="font-weight: 600;">เอกสารหลังสหกิจ</span>
+                            </div>
+                        </div>
+                        <a href="/download.php" class="btn-primary" style="font-size: 14px; width: 100%; justify-content: center;">
+                            ดูรายละเอียดทั้งหมด <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="f-col">
+                    <h4>ติดต่อคณะ</h4>
+                    <p style="opacity: 0.8; font-size: 13px;">คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม<br>มหาวิทยาลัยราชภัฏพิบูลสงคราม<br>โทร: 055-267004</p>
+                </div>
+                <div class="f-col">
+                    <h4>เกี่ยวกับสหกิจศึกษา</h4>
+                    <ul class="f-links">
+                        <li><a href="/coop_info.php">ข้อมูลทั่วไป</a></li>
+                        <li><a href="#">ระเบียบการ</a></li>
+                        <li><a href="/calendar.php">ปฏิทินกิจกรรม</a></li>
+                    </ul>
+                </div>
+                <div class="f-col">
+                    <h4>คู่มือสหกิจศึกษา</h4>
+                    <ul class="f-links">
+                        <li><a href="/static/001_coop-handbook (1).pdf" target="_blank">อ่านคู่มือออนไลน์</a></li>
+                        <li><a href="/static/001_coop-handbook (1).pdf" download>ดาวน์โหลดคู่มือ (PDF)</a></li>
+                    </ul>
+                </div>
+                <div class="f-col">
+                    <h4>ดาวน์โหลด</h4>
+                    <ul class="f-links">
+                        <li><a href="/static/001_coop-handbook (1).pdf" target="_blank">คู่มือสหกิจ</a></li>
+                        <li><a href="/download.php">แบบฟอร์มทั้งหมด</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>© 2026 ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม มรภ.พิบูลสงคราม</div>
+                <div class="f-socials">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-messenger"></i></a>
+                    <a href="#"><i class="fa-brands fa-line"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

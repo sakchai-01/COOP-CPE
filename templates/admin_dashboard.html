@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ผู้ดูแลระบบ - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/admin_dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="header-inner">
+            <img src="/logo.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="top-controls">
+            <select name="academic_year" class="academic-year-select">
+                <option value="2567/1" selected>2567/1</option>
+                <option value="2567/2">2567/2</option>
+                <option value="2568/1">2568/1</option>
+                <option value="2568/2">2568/2</option>
+            </select>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Left & Middle: Main Actions -->
+            <div class="main-actions">
+                <div class="action-card">
+                    <div class="card-icon">
+                        <img src="/admin_icon_std.png" alt="Students">
+                    </div>
+                    <a href="/teacher_std_info.php" class="card-btn">ข้อมูลนักศึกษา</a>
+                </div>
+                <div class="action-card">
+                    <div class="card-icon">
+                        <img src="/admin_icon_company.png" alt="Companies">
+                    </div>
+                    <a href="/company_info.php" class="card-btn">ข้อมูลสถานประกอบการ</a>
+                </div>
+            </div>
+
+            <!-- Right: Stats Panel -->
+            <div class="stats-panel">
+                <div class="stats-grid-top">
+                    <div class="stat-item">
+                        <div class="stat-label passed">เอกสารที่ผ่าน</div>
+                        <div class="stat-num">{{ stats.passed }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label failed">เอกสารที่ไม่ผ่าน</div>
+                        <div class="stat-num">{{ stats.failed }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label pending">เอกสารรอตรวจ</div>
+                        <div class="stat-num">{{ stats.pending }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label total">เอกสารทั้งหมด</div>
+                        <div class="stat-num">{{ stats.total }}</div>
+                    </div>
+                </div>
+
+                <!-- Secondary Actions -->
+                <div class="secondary-actions">
+                    <a href="/teacher_review_results.php" class="sec-card">
+                        <div class="sec-icon"><img src="/admin_icon_doc_all.png" alt="All Docs"></div>
+                        <div class="sec-label">เอกสารทั้งหมด</div>
+                    </a>
+                    <a href="/teacher_review_results.php?status=passed" class="sec-card">
+                        <div class="sec-icon"><img src="/admin_icon_doc_pass.png" alt="Approved"></div>
+                        <div class="sec-label">เอกสารที่ผ่าน</div>
+                    </a>
+                    <a href="/teacher_review_results.php?status=pending" class="sec-card">
+                        <div class="sec-icon"><img src="/admin_icon_doc_wait.png" alt="Waiting"></div>
+                        <div class="sec-label">เอกสารรอตรวจ</div>
+                    </a>
+                    <a href="/teacher_review_results.php?status=failed" class="sec-card">
+                        <div class="sec-icon"><img src="/admin_icon_doc_fail.png" alt="Rejected"></div>
+                        <div class="sec-label">เอกสารที่ไม่ผ่าน</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <a href="/" style="background: #ffffff; color: var(--primary-blue); border: 2px solid var(--primary-blue); padding: 12px 28px; border-radius: 12px; text-decoration: none; font-weight: 700; margin-right: 15px; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-house"></i> หน้าหลัก
+            </a>
+            <a href="/logout" class="btn-logout">
+                <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+            </a>
+        </div>
+    </main>
+</body>
+</html>

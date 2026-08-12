@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กรอกข้อมูลเพื่อทำการ MATCH - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/ai_match.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ============================================================
+           MAIN THEME COOP PROCESSING OVERLAY — Clean website design
+        ============================================================ */
+        #ai-processing-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(11, 31, 60, 0.85);
+            backdrop-filter: blur(12px);
+            font-family: 'Sarabun', sans-serif;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #ai-processing-overlay.show { display: flex; }
+
+        /* Center card */
+        .ai-center-card {
+            position: relative;
+            z-index: 2;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 28px;
+            padding: 40px 48px;
+            width: 90%;
+            max-width: 620px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        /* Top Logo image */
+        .overlay-logo-wrap {
+            margin-bottom: 20px;
+        }
+        .overlay-logo-img {
+            max-height: 75px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* Badge */
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            color: #0284c7;
+            padding: 6px 18px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .ai-badge .ai-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #0284c7;
+            animation: blink-dot 1.2s ease-in-out infinite;
+        }
+        @keyframes blink-dot {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+
+        .ai-main-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0b1f3c;
+            margin-bottom: 6px;
+        }
+        .ai-main-sub {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 28px;
+        }
+
+        /* Steps list */
+        .ai-steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+        .ai-step-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        .ai-step-item.active {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+            box-shadow: 0 4px 12px rgba(14,165,233,0.1);
+        }
+        .ai-step-item.done {
+            border-color: #86efac;
+            background: #f0fdf4;
+        }
+        .step-icon-wrap {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+            background: #e2e8f0;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+        .ai-step-item.active .step-icon-wrap {
+            background: #0ea5e9;
+            color: #ffffff;
+        }
+        .ai-step-item.done .step-icon-wrap {
+            background: #22c55e;
+            color: #ffffff;
+        }
+        .step-text { flex: 1; }
+        .step-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            transition: color 0.3s;
+        }
+        .ai-step-item.active .step-name { color: #0284c7; }
+        .ai-step-item.done .step-name { color: #166534; }
+        .step-desc {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        .step-status {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .ai-step-item.active .step-status { color: #0ea5e9; }
+        .ai-step-item.done .step-status { color: #22c55e; }
+
+        /* Step spinner */
+        .step-spinner {
+            display: none;
+            width: 16px; height: 16px;
+            border: 2px solid #bae6fd;
+            border-top-color: #0ea5e9;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .ai-step-item.active .step-spinner { display: block; }
+        .ai-step-item.done .step-spinner { display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Progress bar */
+        .ai-progress-section { margin-bottom: 20px; }
+        .ai-progress-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .ai-progress-label { font-size: 13px; font-weight: 600; color: #475569; }
+        .ai-progress-pct {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0284c7;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .ai-progress-track {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        .ai-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3a68, #0ea5e9);
+            border-radius: 100px;
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* Log terminal */
+        .ai-log-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #334155;
+            min-height: 60px;
+            max-height: 75px;
+            overflow: hidden;
+            text-align: left;
+        }
+        .log-line { margin-bottom: 3px; line-height: 1.5; }
+        .log-line.ok { color: #16a34a; font-weight: 600; }
+        .log-line.info { color: #0284c7; font-weight: 600; }
+        .log-cursor {
+            display: inline-block;
+            width: 7px; height: 13px;
+            background: #0ea5e9;
+            vertical-align: middle;
+            animation: blink-dot 0.9s step-end infinite;
+            margin-left: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== MAIN THEME PROCESSING OVERLAY ===== -->
+    <div id="ai-processing-overlay">
+        <div class="ai-center-card">
+            <!-- Logo Header -->
+            <div class="overlay-logo-wrap">
+                <img src="/logo.png" alt="Logo" class="overlay-logo-img">
+            </div>
+
+            <div class="ai-badge"><span class="ai-dot"></span> AI MATCHING SYSTEM</div>
+            <div class="ai-main-title">กำลังวิเคราะห์และจับคู่สถานประกอบการ</div>
+            <div class="ai-main-sub">ระบบกำลังประมวลผลโปรไฟล์และจับคู่บริษัทที่เหมาะกับคุณ...</div>
+
+            <!-- Steps -->
+            <div class="ai-steps-list">
+                <div class="ai-step-item" id="step-1">
+                    <div class="step-icon-wrap"><i class="fa-solid fa-file-magnifying-glass"></i></div>
+                    <div class="step-text">
+                        <div class="step-name">สแกน CV &amp; Portfolio</div>
+                        <div class="step-desc">วิเคราะห์ทักษะและข้อมูลจากเอกสาร PDF</div>
+                    </div>
+                    <div class="step-spinner"></div>
+                    <div class="step-status" id="stat-1">รอ</div>
+                </div>
+                <div class="ai-step-item" id="step-2">
+                    <div class="step-icon-wrap"><i class="fa-solid fa-brain"></i></div>
+                    <div class="step-text">
+                        <div class="step-name">ประมวลผลโปรไฟล์นักศึกษา</div>
+                        <div class="step-desc">คำนวณน้ำหนัก เกรด GPA ทักษะ และสายงาน</div>
+                    </div>
+                    <div class="step-spinner"></div>
+                    <div class="step-status" id="stat-2">รอ</div>
+                </div>
+                <div class="ai-step-item" id="step-3">
+                    <div class="step-icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
+                    <div class="step-text">
+                        <div class="step-name">จับคู่สถานประกอบการ</div>
+                        <div class="step-desc">เปรียบเทียบกับฐานข้อมูล {{ company_count }} บริษัท</div>
+                    </div>
+                    <div class="step-spinner"></div>
+                    <div class="step-status" id="stat-3">รอ</div>
+                </div>
+                <div class="ai-step-item" id="step-4">
+                    <div class="step-icon-wrap"><i class="fa-solid fa-ranking-star"></i></div>
+                    <div class="step-text">
+                        <div class="step-name">คำนวณ Match &amp; Chance Score</div>
+                        <div class="step-desc">จัดอันดับ 4 บริษัทที่เหมาะที่สุด</div>
+                    </div>
+                    <div class="step-spinner"></div>
+                    <div class="step-status" id="stat-4">รอ</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="ai-progress-section">
+                <div class="ai-progress-meta">
+                    <span class="ai-progress-label" id="prog-label">กำลังเริ่มต้นระบบ...</span>
+                    <span class="ai-progress-pct" id="prog-pct">0%</span>
+                </div>
+                <div class="ai-progress-track">
+                    <div class="ai-progress-fill" id="prog-fill"></div>
+                </div>
+            </div>
+
+            <!-- Terminal log box -->
+            <div class="ai-log-box" id="ai-log-box">
+                <span class="log-cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <header class="dashboard-header">
+        <div class="header-inner">
+            <img src="/logo.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="match-main">
+        <div class="container">
+            {% if msg %}
+                <div style="background: {% if is_warning %}#fef2f2{% else %}#fffbeb{% endif %}; color: {% if is_warning %}#dc2626{% else %}#92400e{% endif %}; padding: 18px 22px; border-radius: 15px; border: 2px solid {% if is_warning %}#fecaca{% else %}#fef3c7{% endif %}; margin-bottom: 20px; text-align: center; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(239,68,68,0.1);">
+                    <i class="fa-solid {% if is_warning %}fa-triangle-exclamation{% else %}fa-circle-info{% endif %}" style="font-size:18px; margin-right:6px;"></i> {{ msg }}
+                </div>
+            {% endif %}
+            
+            <div id="gpaWarningModal" style="display: none; background: #fef2f2; color: #dc2626; padding: 18px 22px; border-radius: 15px; border: 2px solid #fecaca; margin-bottom: 20px; text-align: center; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(239,68,68,0.1);">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size:18px; margin-right:6px;"></i>
+                เกรดเฉลี่ยต่ำกว่าเกณฑ์ ไม่อนุญาต ให้ออกฝึกสหกิจ โปรดติดต่ออาจารย์ที่ปรึกษาเพื่อสอบถามเพิ่มเติม
+            </div>
+
+            <div class="match-title-area">
+                <div class="student-profile-icon">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div class="match-title-box">
+                    กรอกข้อมูลเพื่อทำการ MATCH
+                </div>
+            </div>
+
+            <form id="ai-match-form" action="/api/student/match" method="POST" enctype="multipart/form-data" class="match-form-card">
+                
+                <div class="form-row-top">
+                    <div class="input-group year-select">
+                        <label>ปีการศึกษา</label>
+                        <select name="academic_year" class="btn-year">
+                            <option value="2567/1" selected>2567/1</option>
+                            <option value="2567/2">2567/2</option>
+                            <option value="2568/1">2568/1</option>
+                            <option value="2568/2">2568/2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>ชื่อ - นามสกุล</label>
+                        <input type="text" name="full_name" placeholder="ชื่อ - นามสกุล" value="{{ student.fullname or '' }}" required>
+                    </div>
+                    <div class="input-group">
+                        <label>รหัสนักศึกษา <small style="color: #64748b; font-size: 10px;">* ไม่สามารถแก้ไขได้</small></label>
+                        <input type="text" name="student_id" value="{{ student.student_id or user.username }}" readonly style="background: #f1f5f9; cursor: not-allowed;">
+                    </div>
+                    <div class="input-group">
+                        <label>สาขา</label>
+                        <select name="department" id="dept_select">
+                            <option value="สาขาวิชาวิศวกรรมคอมพิวเตอร์" selected>สาขาวิชาวิศวกรรมคอมพิวเตอร์</option>
+                            <option value="สาขาวิชาวิศวกรรมโยธา">สาขาวิชาวิศวกรรมโยธา</option>
+                            <option value="สาขาวิชาวิศวกรรมไฟฟ้าสื่อสารและอิเล็คทรอนิกส์">สาขาวิชาวิศวกรรมไฟฟ้าสื่อสารและอิเล็คทรอนิกส์</option>
+                            <option value="สาขาวิชาวิศวกรรมเครื่องกล">สาขาวิชาวิศวกรรมเครื่องกล</option>
+                            <option value="สาขาวิชาวิศวกรรมโลจิสติกส์">สาขาวิชาวิศวกรรมโลจิสติกส์</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>สาขาวิชาเอก</label>
+                        <select name="major" id="major_select">
+                            <option value="ซอฟต์แวร์" selected>ซอฟต์แวร์</option>
+                            <option value="โรบอท">โรบอท</option>
+                            <option value="ไซเบอร์">ไซเบอร์</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>GPA</label>
+                        <input type="number" step="0.01" min="0" max="4" name="gpa" placeholder="3.50" value="{{ student.gpa or '3.50' }}" required>
+                    </div>
+                    <div class="input-group">
+                        <label>สายงานที่สนใจ</label>
+                        <input type="text" name="interest" placeholder="Frontend Developer" value="{{ student.career_interest or '' }}" required>
+                    </div>
+                    <div class="input-group">
+                        <label>ทักษะ1 (Hard skill)</label>
+                        <input type="text" name="skill1" placeholder="Python, Java, etc." value="{{ student.skills or '' }}">
+                    </div>
+                    <div class="input-group">
+                        <label>ทักษะ2 (Hard skill)</label>
+                        <input type="text" name="skill2" placeholder="React, Vue, etc.">
+                    </div>
+
+                    <div class="input-group">
+                        <label>ทักษะ3 (Soft skill)</label>
+                        <input type="text" name="skill3" placeholder="Communication, etc.">
+                    </div>
+                    <div class="input-group">
+                        <label>รูปแบบการทำงาน</label>
+                        <select name="work_format">
+                            <option value="Hybrid" selected>Hybrid</option>
+                            <option value="Onsite">Onsite</option>
+                            <option value="Remote">Remote</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>ผลงาน (Portfolio PDF)</label>
+                        <div class="file-upload-box">
+                            <input type="file" name="portfolio" id="portfolio" accept=".pdf" style="display: none;">
+                            <label for="portfolio" id="port_label_text">อัปโหลดไฟล์ PDF</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>CV (วิเคราะห์เชิงลึกโดย AI)</label>
+                        <div class="file-upload-box">
+                            <input type="file" name="cv" id="cv_upload_input" accept=".pdf" style="display: none;">
+                            <label for="cv_upload_input" id="cv_label_text">อัปโหลดไฟล์ PDF</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/student_dashboard.php" class="btn-back">
+                        <i class="fa-solid fa-house"></i> กลับไปที่หน้าหลัก
+                    </a>
+                    <button type="submit" class="btn-save" id="submit-btn">
+                        <i class="fa-solid fa-robot"></i> บันทึกข้อมูลเพื่อ MATCH ใหม่
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // File upload labels
+        ['cv_upload_input', 'portfolio'].forEach(id => {
+            const inp = document.getElementById(id);
+            const lbl = document.getElementById(id === 'cv_upload_input' ? 'cv_label_text' : 'port_label_text');
+            if (inp && lbl) {
+                inp.addEventListener('change', () => {
+                    if (inp.files && inp.files[0]) {
+                        lbl.textContent = '✓ ' + inp.files[0].name;
+                        lbl.style.background = '#10b981';
+                    }
+                });
+            }
+        });
+
+        // =============================================
+        //  MAIN THEME MATCHING ANIMATION
+        // =============================================
+        const overlay  = document.getElementById('ai-processing-overlay');
+        const form     = document.getElementById('ai-match-form');
+        const progFill = document.getElementById('prog-fill');
+        const progPct  = document.getElementById('prog-pct');
+        const progLabel = document.getElementById('prog-label');
+        const logBox   = document.getElementById('ai-log-box');
+
+        function addLog(text, cls = '') {
+            const line = document.createElement('div');
+            line.className = 'log-line' + (cls ? ' ' + cls : '');
+            line.textContent = '$ ' + text;
+            const cursor = logBox.querySelector('.log-cursor');
+            logBox.insertBefore(line, cursor);
+            const lines = logBox.querySelectorAll('.log-line');
+            if (lines.length > 4) lines[0].remove();
+        }
+
+        let pct = 0;
+        function setPct(target) {
+            const iv = setInterval(() => {
+                if (pct < target) { pct++; progPct.textContent = pct + '%'; }
+                else clearInterval(iv);
+            }, 18);
+        }
+
+        const steps = [
+            {
+                id: 'step-1', statId: 'stat-1', pct: 25,
+                label: 'กำลังสแกนเอกสาร CV และ Portfolio...', dur: 2200,
+                logs: [
+                    { t: 100, text: 'Loading PDF document... OK', cls: 'ok' },
+                    { t: 700, text: 'Parsing text and skills...', cls: '' },
+                    { t: 1400, text: 'CV extraction complete ✓', cls: 'info' },
+                ]
+            },
+            {
+                id: 'step-2', statId: 'stat-2', pct: 50,
+                label: 'กำลังประมวลผลโปรไฟล์นักศึกษา...', dur: 2200,
+                logs: [
+                    { t: 100, text: 'Parsing student profile...', cls: '' },
+                    { t: 600, text: 'Evaluating GPA weight & skills...', cls: 'ok' },
+                    { t: 1300, text: 'Profile vector normalized ✓', cls: 'info' },
+                ]
+            },
+            {
+                id: 'step-3', statId: 'stat-3', pct: 75,
+                label: 'กำลังจับคู่กับสถานประกอบการ...', dur: 2400,
+                logs: [
+                    { t: 100, text: 'Fetching company database...', cls: '' },
+                    { t: 700, text: 'Matching skills & interests...', cls: '' },
+                    { t: 1500, text: 'Top 4 companies shortlisted ✓', cls: 'ok' },
+                ]
+            },
+            {
+                id: 'step-4', statId: 'stat-4', pct: 100,
+                label: 'กำลังสรุป Match Score และ Chance Score...', dur: 1600,
+                logs: [
+                    { t: 100, text: 'Calculating final scores...', cls: '' },
+                    { t: 700, text: 'Ranking complete ✓', cls: 'ok' },
+                    { t: 1200, text: 'Results ready — Redirecting ✓✓', cls: 'info' },
+                ]
+            },
+        ];
+
+        function runStep(idx) {
+            if (idx >= steps.length) return;
+            const s = steps[idx];
+            if (idx > 0) {
+                const prev = steps[idx - 1];
+                document.getElementById(prev.id).classList.remove('active');
+                document.getElementById(prev.id).classList.add('done');
+                document.getElementById(prev.statId).textContent = '✓';
+            }
+            document.getElementById(s.id).classList.add('active');
+            document.getElementById(s.statId).textContent = 'กำลังทำ...';
+            progFill.style.width = s.pct + '%';
+            progLabel.textContent = s.label;
+            setPct(s.pct);
+            s.logs.forEach(l => setTimeout(() => addLog(l.text, l.cls), l.t));
+            setTimeout(() => runStep(idx + 1), s.dur);
+        }
+
+        form.addEventListener('submit', (e) => {
+            const gpaInput = form.querySelector('input[name="gpa"]');
+            const gpaVal = parseFloat(gpaInput ? gpaInput.value : 0);
+            const warningModal = document.getElementById('gpaWarningModal');
+
+            if (isNaN(gpaVal) || gpaVal < 2.00) {
+                e.preventDefault();
+                if (warningModal) {
+                    warningModal.style.display = 'block';
+                    warningModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    alert('เกรดเฉลี่ยต่ำกว่าเกณฑ์ ไม่อนุญาต ให้ออกฝึกสหกิจ โปรดติดต่ออาจารย์ที่ปรึกษาเพื่อสอบถามเพิ่มเติม');
+                }
+                return false;
+            }
+
+            if (warningModal) warningModal.style.display = 'none';
+            overlay.classList.add('show');
+            addLog('AI Matching Engine initializing...', 'info');
+            setTimeout(() => runStep(0), 500);
+        });
+    </script>
+</body>
+</html>

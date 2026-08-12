@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตรวจเอกสาร - {{ student_info.fullname or student_id }} - ระบบสหกิจศึกษา</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary-blue: #0b1f3c; --secondary-blue: #1e3a68; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sarabun', sans-serif; background: linear-gradient(180deg, #f1f6fb 0%, #aabdd8 100%); min-height: 100vh; }
+        .dashboard-header { background: var(--primary-blue); padding: 15px 0; color: white; display: flex; justify-content: center; }
+        .header-inner { display: flex; align-items: center; gap: 20px; max-width: 1200px; width: 90%; }
+        .logo { width: 70px; }
+        .header-text h1 { font-size: 20px; font-weight: 700; }
+        .header-text p { font-size: 13px; opacity: 0.9; }
+        .nav-actions { margin-left: auto; }
+        .btn-nav-back { background: rgba(255,255,255,0.15); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); }
+
+        .check-main { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+
+        /* Student info card */
+        .student-card { background: white; border-radius: 20px; padding: 24px 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); margin-bottom: 25px; display: flex; align-items: center; gap: 20px; }
+        .student-avatar { width: 56px; height: 56px; background: var(--secondary-blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+        .student-name { font-size: 18px; font-weight: 700; color: var(--secondary-blue); }
+        .student-id { font-size: 14px; color: #64748b; margin-top: 3px; }
+
+        /* Doc list */
+        .docs-container { background: white; border-radius: 20px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); margin-bottom: 25px; }
+        .docs-title { font-size: 17px; font-weight: 700; color: var(--secondary-blue); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .doc-row { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 14px; border: 1px solid #f1f5f9; margin-bottom: 10px; transition: all 0.2s; flex-wrap: wrap; }
+        .doc-row:hover { background: #f8fafc; }
+        .doc-num { width: 30px; height: 30px; background: #e0f2fe; color: #0369a1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+        .doc-label { flex: 1; font-weight: 600; font-size: 14px; color: #1e293b; min-width: 200px; }
+        .doc-file { font-size: 12px; color: #64748b; }
+        .doc-file a { color: #0369a1; text-decoration: none; font-weight: 600; }
+        .doc-file a:hover { text-decoration: underline; }
+        .doc-status { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+        .s-wait { background: #fef9c3; color: #854d0e; }
+        .s-pass { background: #dcfce7; color: #166534; }
+        .s-fail { background: #fee2e2; color: #991b1b; }
+        .s-none { background: #f1f5f9; color: #64748b; }
+
+        /* Action form */
+        .doc-action-form { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .comment-input { padding: 6px 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 12px; font-family: inherit; min-width: 160px; }
+        .btn-pass { background: #10b981; color: white; border: none; padding: 7px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .btn-pass:hover { background: #059669; }
+        .btn-fail { background: #ef4444; color: white; border: none; padding: 7px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .btn-fail:hover { background: #dc2626; }
+        .already-passed { font-size: 13px; color: #10b981; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+        /* Global approve form */
+        .global-actions { background: white; border-radius: 20px; padding: 24px 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .global-title { font-size: 16px; font-weight: 700; color: var(--secondary-blue); }
+        .global-desc { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .global-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-approve-all { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 11px 24px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .btn-approve-all:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(16,185,129,0.3); }
+        .btn-reject-all { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 24px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .btn-reject-all:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(239,68,68,0.3); }
+
+        .back-btn-wrap { display: flex; justify-content: center; margin-top: 20px; }
+        .btn-back { background: var(--secondary-blue); color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; }
+        .btn-back:hover { background: #254b85; }
+        .empty-state { text-align: center; padding: 60px; color: #94a3b8; font-size: 16px; }
+    </style>
+</head>
+<body>
+<header class="dashboard-header">
+    <div class="header-inner">
+        <img src="/logo.png" alt="Logo" class="logo">
+        <div class="header-text">
+            <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+            <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+        </div>
+        <div class="nav-actions">
+            <a href="/teacher_check_docs.php" class="btn-nav-back">← กลับรายการนักศึกษา</a>
+        </div>
+    </div>
+</header>
+
+<main class="check-main">
+    <!-- Student Info Card -->
+    <div class="student-card">
+        <div class="student-avatar"><i class="fa-solid fa-user-graduate"></i></div>
+        <div>
+            <div class="student-name">{{ student_info.fullname or student_id }}</div>
+            <div class="student-id">รหัสนักศึกษา: {{ student_id }} | GPA: {{ student_info.gpa or 'N/A' }} | สาขา: {{ student_info.major or '-' }}</div>
+        </div>
+    </div>
+
+    <!-- Global approve/reject -->
+    <div class="global-actions">
+        <div>
+            <div class="global-title"><i class="fa-solid fa-wand-magic-sparkles"></i> อนุมัติ/ปฏิเสธทั้งหมด</div>
+            <div class="global-desc">ดำเนินการกับเอกสารที่ยังรอตรวจสอบทั้งหมดในคราวเดียว</div>
+        </div>
+        <div class="global-btns">
+            <form action="/api/teacher/bulk-doc-status" method="POST">
+                <input type="hidden" name="student_id" value="{{ student_id }}">
+                <input type="hidden" name="status" value="ผ่าน">
+                <input type="hidden" name="comment" value="">
+                <button type="submit" class="btn-approve-all"><i class="fa-solid fa-check-double"></i> อนุมัติทั้งหมด</button>
+            </form>
+            <form action="/api/teacher/bulk-doc-status" method="POST">
+                <input type="hidden" name="student_id" value="{{ student_id }}">
+                <input type="hidden" name="status" value="ไม่ผ่าน">
+                <input name="comment" placeholder="เหตุผลที่ปฏิเสธ..." style="padding:6px 12px;border-radius:8px;border:1px solid #cbd5e1;font-size:12px;margin-right:5px;">
+                <button type="submit" class="btn-reject-all"><i class="fa-solid fa-xmark"></i> ปฏิเสธทั้งหมด</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Document list -->
+    <div class="docs-container">
+        <div class="docs-title"><i class="fa-solid fa-files"></i> เอกสารที่นักศึกษายื่น</div>
+        {% if not docs %}
+            <div class="empty-state">ยังไม่มีเอกสารที่อัปโหลด</div>
+        {% else %}
+            {% for d in docs %}
+            {% set status = d.get('status', 'รอตรวจ') %}
+            <div class="doc-row">
+                <div class="doc-num">{{ loop.index }}</div>
+                <div style="flex:1;">
+                    <div class="doc-label">{{ doc_labels.get(d.get('doc_type',''), d.get('doc_type','')) }}</div>
+                    <div class="doc-file">
+                        {% if d.get('file_name') %}
+                            <a href="/static/uploads/documents/{{ d.file_name }}" target="_blank">
+                                <i class="fa-solid fa-file-pdf" style="color:#ef4444;"></i> {{ d.file_name }}
+                            </a>
+                        {% else %}
+                            ยังไม่มีไฟล์
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="doc-status {% if status == 'ผ่าน' %}s-pass{% elif status == 'ไม่ผ่าน' %}s-fail{% elif status == 'รอตรวจ' %}s-wait{% else %}s-none{% endif %}">
+                    {{ status }}
+                </div>
+                {% if status != 'ผ่าน' %}
+                <form action="/api/teacher/update-doc-status" method="POST" class="doc-action-form">
+                    <input type="hidden" name="doc_id" value="{{ d.id }}">
+                    <input type="text" name="comment" class="comment-input" placeholder="ข้อเสนอแนะ..." value="{{ d.comment or '' }}">
+                    <button type="submit" name="status" value="ผ่าน" class="btn-pass">✓ ผ่าน</button>
+                    <button type="submit" name="status" value="ไม่ผ่าน" class="btn-fail">✕ ไม่ผ่าน</button>
+                </form>
+                {% else %}
+                <div class="already-passed"><i class="fa-solid fa-circle-check"></i> อนุมัติแล้ว</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="back-btn-wrap">
+        <a href="/teacher_check_docs.php" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> กลับรายการนักศึกษา
+        </a>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ปฏิทินกิจกรรมสหกิจศึกษา 2569 - ระบบสหกิจศึกษา</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --navy-dark: #0b1f3c;
+            --navy-medium: #1e3a68;
+            --blue-accent: #3b82f6;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            padding: 50px 20px;
+            color: #1e293b;
+        }
+
+        .calendar-doc {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-medium) 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            border-bottom: 5px solid var(--blue-accent);
+        }
+
+        .header-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .sub-header {
+            margin-top: 25px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .table-container {
+            padding: 40px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--navy-medium);
+            font-weight: 700;
+            padding: 18px 20px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+            vertical-align: top;
+            line-height: 1.6;
+            transition: background 0.2s;
+        }
+
+        tr:hover td { background-color: #f9fbff; }
+
+        .col-num {
+            width: 70px;
+            font-weight: 800;
+            color: #cbd5e1;
+            font-size: 20px;
+        }
+
+        .col-activity {
+            font-weight: 700;
+            color: var(--navy-dark);
+            font-size: 15px;
+            min-width: 250px;
+        }
+
+        .col-date {
+            font-weight: 700;
+            color: #2563eb;
+            min-width: 200px;
+        }
+
+        .col-owner {
+            font-weight: 600;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .col-note {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+            max-width: 200px;
+        }
+
+        .btn-back {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-3px);
+        }
+
+        .duration-badge {
+            display: inline-block;
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 2px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 5px;
+            border: 1px solid #dbeafe;
+        }
+
+        @media (max-width: 768px) {
+            .header-section { padding: 80px 20px 40px; }
+            .header-section h1 { font-size: 22px; }
+            .table-container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-doc">
+        <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</a>
+
+        <div class="header-section">
+            <h1>ปฏิทินการเตรียมสหกิจศึกษา ภาคการศึกษาที่ 1/2569</h1>
+            <p>และการออกปฏิบัติงานสหกิจศึกษา ภาคการศึกษาที่ 2/2569 (พฤศจิกายน 2569 - มีนาคม 2570)</p>
+            <div class="sub-header">
+                <i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i>
+                สาขาวิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม มหาวิทยาลัยราชภัฏพิบูลสงคราม
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>กิจกรรม</th>
+                        <th>กำหนดการ / ระยะเวลา</th>
+                        <th>ฝ่ายที่รับผิดชอบ</th>
+                        <th>หมายเหตุเพิ่มเติม</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in calendar_items %}
+                    <tr>
+                        <td class="col-num">{{ "%02d" | format(item.num | int) if item.num.isdigit() else item.num }}</td>
+                        <td class="col-activity">{{ item.activity }}</td>
+                        <td class="col-date">
+                            {{ item.duration_4 | replace('\n', '<br>') | safe }}
+                            {% if item.duration_6 and item.duration_6 != item.duration_4 %}
+                                <div><span class="duration-badge"><i class="fa-solid fa-clock"></i> {{ item.duration_6 }}</span></div>
+                            {% endif %}
+                        </td>
+                        <td class="col-owner">{{ item.responsible or '-' }}</td>
+                        <td class="col-note">{{ item.note or '' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ติดต่อสอบถาม - Cooperative Education</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="top-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <img src="/logo.png" alt="Logo" class="logo">
+                <div class="site-title">
+                    <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                    <h2>Cooperative Education System Faculty of Engineering and Industrial Technology</h2>
+                </div>
+            </div>
+            <div class="login-area">
+                {% if user %}
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="font-weight: 500; font-size: 14px; color: #ffffff;">
+                            <i class="fa-solid fa-user-circle"></i> {{ user.username }}
+                            <small>({{ user.role | capitalize }})</small>
+                        </span>
+                        <a href="/{{ user.role }}_dashboard.php" class="btn-login" style="background: #A1C4D8; color: #0b1f3c; border: none; padding: 7px 18px; font-size: 13px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                            <i class="fa-solid fa-gauge"></i> แดชบอร์ด
+                        </a>
+                        <a href="/logout" class="btn-login" style="background: #ef4444; color: white; padding: 7px 12px; font-size: 13px; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);">ออกจากระบบ</a>
+                    </div>
+                {% else %}
+                    <a href="/login" class="btn-login">เข้าสู่ระบบ</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="/">หน้าหลัก</a></li>
+                <li><a href="/coop_info.php">สหกิจศึกษา</a></li>
+                <li><a href="/download.php">ดาวน์โหลด</a></li>
+                <li><a href="/contact.php" class="active">ติดต่อสอบถาม</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="contact-banner">
+        <div class="banner-overlay"></div>
+        <div class="container banner-text">
+            <h2>ติดต่อสอบถามสหกิจศึกษา</h2>
+            <p>Contact Cooperative Education</p>
+        </div>
+    </div>
+
+    <main class="contact-main">
+        <div class="container">
+            <div class="contact-cards">
+                <div class="c-card">
+                    <div class="c-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="c-info">
+                        <h3>โทรศัพท์</h3>
+                        <p>055-267004</p>
+                        <span class="sub">Phone</span>
+                    </div>
+                </div>
+                <div class="c-card">
+                    <div class="c-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="c-info">
+                        <h3>Email</h3>
+                        <span class="sub">industrial.technology@psru.ac.th</span>
+                    </div>
+                </div>
+                <div class="c-card">
+                    <div class="c-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="c-info">
+                        <h3>ที่อยู่สำนักงาน</h3>
+                        <p>คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม มหาวิทยาลัยราชภัฏพิบูลสงคราม 156 หมู่ 5 ตำบลพลายชุมพล อำเภอเมือง จังหวัดพิษณุโลก 65000</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>แผนที่มหาวิทยาลัย</span>
+                    <small>University Map</small>
+                </div>
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3818.1!2d100.1986!3d16.8355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30dfef5dfba83b3b%3A0x3d4ee1e17c2e2e0a!2sPhilul%20Songkram%20Rajabhat%20University!5e0!3m2!1sth!2sth!4v1710000000000!5m2!1sth!2sth"
+                        width="100%" height="450" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <div class="map-link">
+                        <a href="https://maps.app.goo.gl/pYW7EkMQmUWbvt9VA" target="_blank">ดูแผนที่ขนาดใหญ่ขึ้น <i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="additional-channels">
+                <div class="section-title">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>ช่องทางการติดต่ออื่นๆ</span>
+                    <small>Additional Contact Channels</small>
+                </div>
+                <div class="channels-grid">
+                    <a href="tel:055267004" class="ch-item"><i class="fa-solid fa-phone"></i> โทรศัพท์<br><small>055-267004</small></a>
+                    <a href="mailto:industrial.technology@psru.ac.th" class="ch-item"><i class="fa-solid fa-envelope"></i> Email<br><small>industrial.technology@psru.ac.th</small></a>
+                    <a href="https://technology.psru.ac.th/" target="_blank" class="ch-item"><i class="fa-solid fa-globe"></i> Website คณะ<br><small>technology.psru.ac.th</small></a>
+                    <a href="https://maps.app.goo.gl/s5PmPqFYrcnxW6ya6" target="_blank" class="ch-item"><i class="fa-solid fa-location-dot"></i> Location<br><small>แผนที่มหาวิทยาลัย</small></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="contact-footer">
+        <div class="container footer-content">
+            <div class="f-info">
+                <img src="/logo.png" alt="Logo" class="f-logo">
+                <span>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม มหาวิทยาลัยราชภัฏพิบูลสงคราม | Phitsanulok Rajabhat University</span>
+            </div>
+            <div class="f-social">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-facebook-messenger"></i></a>
+                <a href="#"><i class="fa-brands fa-line"></i></a>
+                <span class="powered">Powered by CoopSystem</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

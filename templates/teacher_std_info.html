@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลนักศึกษา - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/teacher_std_info.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary-blue: #0b1f3c; --secondary-blue: #1e3a68; --text-muted: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sarabun', sans-serif; background: linear-gradient(180deg, #f1f6fb 0%, #aabdd8 100%); min-height: 100vh; }
+        .dashboard-header { background: var(--primary-blue); padding: 15px 0; color: white; display: flex; justify-content: center; }
+        .header-inner { display: flex; align-items: center; gap: 20px; max-width: 1200px; width: 90%; }
+        .logo { width: 70px; }
+        .header-text h1 { font-size: 20px; font-weight: 700; }
+        .header-text p { font-size: 13px; opacity: 0.9; }
+        .nav-actions { margin-left: auto; }
+        .btn-nav-back { background: rgba(255,255,255,0.15); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+        .btn-nav-back:hover { background: rgba(255,255,255,0.25); }
+        .info-main { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .info-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+        .title { font-size: 22px; font-weight: 700; color: var(--secondary-blue); display: flex; align-items: center; gap: 10px; }
+        .search-box { position: relative; }
+        .search-box input { padding: 10px 20px 10px 42px; border-radius: 30px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 14px; width: 280px; outline: none; }
+        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+        .table-container { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+        .std-table { width: 100%; border-collapse: collapse; }
+        .std-table thead { background: var(--secondary-blue); color: white; }
+        .std-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; }
+        .std-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s; }
+        .std-table tbody tr:hover { background: #f8fafc; }
+        .std-table td { padding: 14px 16px; font-size: 13px; vertical-align: middle; }
+        .std-id { font-family: monospace; font-size: 13px; font-weight: 700; color: var(--secondary-blue); }
+        .std-name { font-weight: 600; }
+        .badge-gpa { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 13px; }
+        .interest { color: var(--text-muted); }
+        .skills { color: var(--text-muted); margin-top: 3px; }
+        .status-badge { padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-block; }
+        .match-badge { background: #f0fdf4; color: #166534; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+        .no-match { color: #94a3b8; font-style: italic; font-size: 12px; }
+        .empty-state { text-align: center; padding: 60px; color: #94a3b8; font-size: 16px; }
+        .btn-action-view { font-size: 13px; font-weight: 700; background: #e0f2fe; color: #0369a1; padding: 7px 14px; border-radius: 10px; text-decoration: none; white-space: nowrap; display: inline-block; transition: all 0.2s; }
+        .btn-action-view:hover { background: #0369a1; color: white; }
+        .logout-wrapper { display: flex; justify-content: center; margin: 35px 0 10px; gap: 15px; }
+        .btn-logout { display: inline-flex; align-items: center; gap: 10px; padding: 12px 28px; background: #133b6e; color: white; text-decoration: none; border-radius: 12px; font-size: 15px; font-weight: 600; box-shadow: 0 4px 12px rgba(14,165,233,.2); transition: all .25s; }
+        .btn-logout:hover { background: #072736; transform: translateY(-2px); }
+        @media(max-width: 900px) { .std-table { font-size: 11px; } .std-table th, .std-table td { padding: 10px 10px; } }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="header-inner">
+            <img src="/logo.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+            </div>
+            <div class="nav-actions">
+                {% if user and user.role == 'admin' %}
+                    <a href="/admin_dashboard.php" class="btn-nav-back">หน้าหลักผู้ดูแลระบบ</a>
+                {% else %}
+                    <a href="/teacher_dashboard.php" class="btn-nav-back">หน้าหลักอาจารย์</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="info-main">
+        <div class="info-header">
+            <h2 class="title"><i class="fa-solid fa-graduation-cap"></i> ข้อมูลนักศึกษา</h2>
+            <form action="/teacher_std_info.php" method="GET" class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" name="q" placeholder="ค้นหารหัสนักศึกษา/ชื่อ..." value="{{ search or '' }}">
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table class="std-table">
+                <thead>
+                    <tr>
+                        <th width="12%">รหัสนักศึกษา</th>
+                        <th width="18%">ชื่อ-นามสกุล</th>
+                        <th width="8%">GPA</th>
+                        <th width="22%">ความสนใจ / ทักษะ</th>
+                        <th width="13%">สถานะ</th>
+                        <th width="18%">บริษัทที่ Match</th>
+                        <th width="9%">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if not students %}
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            ไม่พบข้อมูลนักศึกษา{% if search %} ที่ตรงกับ "{{ search }}"{% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    {% for s in students %}
+                    <tr>
+                        <td class="std-id">{{ s.student_id }}</td>
+                        <td class="std-name">{{ s.fullname or '-' }}</td>
+                        <td><span class="badge-gpa">{{ s.gpa or 'N/A' }}</span></td>
+                        <td>
+                            <div class="interest"><strong>ความสนใจ:</strong> {{ s.career_interest or '-' }}</div>
+                            <div class="skills"><strong>ทักษะ:</strong> {{ s.skills or '-' }}</div>
+                        </td>
+                        <td>
+                            {% set st = s.get('app_status', 'not_submitted') %}
+                            {% if st == 'passed' %}
+                                <span class="status-badge" style="background:#ecfdf5;color:#059669;">ผ่าน</span>
+                            {% elif st == 'failed' %}
+                                <span class="status-badge" style="background:#fef2f2;color:#dc2626;">ไม่ผ่าน</span>
+                            {% elif st == 'pending' %}
+                                <span class="status-badge" style="background:#e0f2fe;color:#0284c7;">กำลังตรวจสอบ</span>
+                            {% else %}
+                                <span class="status-badge" style="background:#f1f5f9;color:#94a3b8;">ยังไม่กรอก</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if s.get('matchcompany') %}
+                                <div class="match-badge"><i class="fa-solid fa-building"></i> {{ s.matchcompany }}</div>
+                            {% else %}
+                                <span class="no-match">- ยังไม่ได้ Match -</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/teacher_std_detail.php?id={{ s.student_id }}" class="btn-action-view">ดูรายละเอียด</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="logout-wrapper">
+            {% if user and user.role == 'admin' %}
+                <a href="/admin_dashboard.php" class="btn-logout"><i class="fa-solid fa-house"></i> กลับไปที่หน้าหลัก</a>
+            {% else %}
+                <a href="/teacher_dashboard.php" class="btn-logout"><i class="fa-solid fa-house"></i> กลับไปที่หน้าหลัก</a>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

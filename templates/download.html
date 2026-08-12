@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ดาวน์โหลดเอกสาร - Cooperative Education</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/download.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="top-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <img src="/logo.png" alt="Logo" class="logo">
+                <div class="site-title">
+                    <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                    <h2>Cooperative Education System Faculty of Engineering and Industrial Technology</h2>
+                </div>
+            </div>
+            <div class="login-area">
+                {% if user %}
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="font-weight: 500; font-size: 14px; color: #ffffff;">
+                            <i class="fa-solid fa-user-circle"></i> {{ user.username }}
+                            <small>({{ user.role | capitalize }})</small>
+                        </span>
+                        <a href="/{{ user.role }}_dashboard.php" class="btn-login" style="background: #A1C4D8; color: #0b1f3c; border: none; padding: 7px 18px; font-size: 13px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                            <i class="fa-solid fa-gauge"></i> แดชบอร์ด
+                        </a>
+                        <a href="/logout" class="btn-login" style="background: #ef4444; color: white; padding: 7px 12px; font-size: 13px; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);">ออกจากระบบ</a>
+                    </div>
+                {% else %}
+                    <a href="/login" class="btn-login">เข้าสู่ระบบ</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="/">หน้าหลัก</a></li>
+                <li><a href="/coop_info.php">สหกิจศึกษา</a></li>
+                <li><a href="/download.php" class="active">ดาวน์โหลด</a></li>
+                <li><a href="/contact.php">ติดต่อสอบถาม</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="download-content">
+        <div class="container">
+            <h2 class="main-title">ดาวน์โหลดเอกสารสหกิจศึกษา</h2>
+
+            <!-- Section 1: Before -->
+            <div class="download-section section-before">
+                <div class="section-header">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <h3>เอกสารก่อนออกสหกิจ</h3>
+                </div>
+                <div class="section-body">
+                    <div class="download-item">
+                        <div class="item-info">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span class="file-name">coop_02 ใบสมัครสหกิจศึกษา</span>
+                        </div>
+                        <a href="/static/coop_02.pdf" class="btn-dl" download><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    </div>
+                    <div class="download-item">
+                        <div class="item-info">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span class="file-name">coop_05 แบบแจ้งรายละเอียดนักศึกษา</span>
+                        </div>
+                        <a href="/static/coop_05.pdf" class="btn-dl" download><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    </div>
+                    <div class="download-item">
+                        <div class="item-info">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span class="file-name">coop_06 แบบแจ้งข้อมูลสถานประกอบการ</span>
+                        </div>
+                        <a href="/static/coop_06.pdf" class="btn-dl" download><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: During -->
+            <div class="download-section section-during">
+                <div class="section-header">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <h3>เอกสารระหว่างสหกิจ</h3>
+                </div>
+                <div class="section-body">
+                    <div class="download-item">
+                        <div class="item-info">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span class="file-name">coop_07 แบบบัณฑิตการปฏิบัติงาน</span>
+                        </div>
+                        <a href="/static/coop_07.pdf" class="btn-dl" download><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    </div>
+                    <div class="download-item">
+                        <div class="item-info">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span class="file-name">coop_08 แบบแจ้งโครงงานสหกิจ</span>
+                        </div>
+                        <a href="/static/coop_08.pdf" class="btn-dl" download><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: After -->
+            <div class="download-section section-after">
+                <div class="section-header">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <h3>เอกสารหลังสหกิจ</h3>
+                </div>
+                <div class="section-body">
+                    <div class="download-item">
+                        <div class="item-info">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span class="file-name">coop_13 หนังสือยินยอมเผยแพร่รายงานสหกิจศึกษา</span>
+                        </div>
+                        <a href="/static/coop_13.pdf" class="btn-dl" download><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    </div>
+                    <div class="download-item">
+                        <div class="item-info">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span class="file-name">coop_18 แบบสอบถามนักศึกษาสหกิจศึกษา</span>
+                        </div>
+                        <a href="/static/coop_18.pdf" class="btn-dl" download><i class="fa-solid fa-download"></i> ดาวน์โหลด</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

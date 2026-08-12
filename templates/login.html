@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .password-wrapper{ position: relative; width: 100%; }
+        .password-wrapper input{ width:100%; box-sizing:border-box; padding-right:45px; }
+        .toggle-password{ position:absolute; top:50%; right:15px; transform:translateY(-50%); cursor:pointer; color:#666; font-size:20px; transition:.2s; }
+        .toggle-password:hover{ color:#0d6efd; }
+    </style>
+</head>
+<body>
+    <header class="login-header">
+        <div class="header-inner">
+            <img src="/logo.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="login-main">
+        <section class="login-panel login-box" aria-labelledby="login-title">
+            <form action="/login" method="POST" class="login-form">
+
+                <div class="member-group" role="radiogroup" aria-labelledby="login-title">
+                    <p class="member-group-title" id="login-title">
+                        ประเภทของผู้เข้าใช้ระบบ / Member Group
+                    </p>
+
+                    <label>
+                        <input type="radio" name="role" value="student" checked>
+                        <span>นักศึกษา / Student</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="role" value="teacher">
+                        <span>อาจารย์ / Teacher</span>
+                    </label>
+
+                    <label>
+                        <input type="radio" name="role" value="admin">
+                        <span>ผู้ดูแลระบบ / Admin</span>
+                    </label>
+                </div>
+
+                <div class="field-row">
+                    <label for="username">
+                        ชื่อเข้าระบบ<br>
+                        <span>Username</span>
+                    </label>
+
+                    <input type="text" id="username" name="username" autocomplete="username" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="password">
+                        รหัสผ่าน<br>
+                        <span>Password</span>
+                    </label>
+
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" autocomplete="current-password" required>
+                        <i class="bi bi-eye-slash toggle-password" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-button">
+                    ลงชื่อเข้าใช้ / Login
+                </button>
+
+                <p class="error-msg" id="errBox" style="display: {{ 'block' if error else 'none' }}; color: #e11d48; background: #ffe4e6; padding: 10px; border-radius: 6px; margin-top: 15px; text-align: center; font-size: 14px;">{{ error }}</p>
+
+                <a href="/" class="back-link">
+                    ← กลับสู่หน้าหลัก
+                </a>
+
+            </form>
+        </section>
+    </main>
+
+    <script>
+    (function () {
+        var params = new URLSearchParams(window.location.search);
+        var error = params.get('error');
+        var box = document.getElementById('errBox');
+
+        if (error && box) {
+            box.textContent = error;
+            box.style.display = 'block';
+        }
+    })();
+
+    const password = document.getElementById("password");
+    const toggle = document.getElementById("togglePassword");
+
+    if (toggle && password) {
+        toggle.addEventListener("click", function () {
+            if(password.type === "password"){
+                password.type = "text";
+                this.classList.remove("bi-eye-slash");
+                this.classList.add("bi-eye");
+            }else{
+                password.type = "password";
+                this.classList.remove("bi-eye");
+                this.classList.add("bi-eye-slash");
+            }
+        });
+    }
+    </script>
+</body>
+</html>

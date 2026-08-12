@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตรวจเอกสารนักศึกษา - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/teacher_std_info.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary-blue: #0b1f3c; --secondary-blue: #1e3a68; --text-muted: #64748b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sarabun', sans-serif; background: linear-gradient(180deg, #f1f6fb 0%, #aabdd8 100%); min-height: 100vh; }
+        .dashboard-header { background: var(--primary-blue); padding: 15px 0; color: white; display: flex; justify-content: center; }
+        .header-inner { display: flex; align-items: center; gap: 20px; max-width: 1200px; width: 90%; }
+        .logo { width: 70px; }
+        .header-text h1 { font-size: 20px; font-weight: 700; }
+        .header-text p { font-size: 13px; opacity: 0.9; }
+        .nav-actions { margin-left: auto; }
+        .btn-nav-back { background: rgba(255,255,255,0.15); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-nav-back:hover { background: rgba(255,255,255,0.25); }
+
+        .info-main { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+
+        /* Section header */
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
+        .section-title { font-size: 22px; font-weight: 700; color: var(--secondary-blue); display: flex; align-items: center; gap: 10px; }
+        .count-badge { background: var(--secondary-blue); color: white; padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+
+        .check-container { background: white; border-radius: 25px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+
+        /* Each student row */
+        .check-item {
+            display: flex; align-items: center; background: #f8fafc; margin-bottom: 12px;
+            padding: 16px 25px; border-radius: 50px; gap: 20px;
+            border: 1px solid #e2e8f0; transition: all 0.2s;
+        }
+        .check-item:hover { background: #e0f2fe; border-color: #bae6fd; }
+        .item-num { width: 38px; height: 38px; background: #0ea5e9; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+        .item-name { flex: 1; font-weight: 600; font-size: 16px; color: #1e293b; min-width: 160px; }
+        .item-id { flex: 1; color: var(--text-muted); font-size: 14px; min-width: 160px; }
+        .badge-status { background: #fef9c3; color: #854d0e; padding: 6px 18px; border-radius: 20px; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+        .btn-check-doc {
+            background: #0ea5e9; color: white; padding: 9px 24px; border-radius: 20px;
+            text-decoration: none; font-weight: 700; font-size: 14px; transition: all 0.2s;
+            display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+        }
+        .btn-check-doc:hover { background: #0284c7; transform: scale(1.03); }
+
+        .empty-state { text-align: center; padding: 70px; color: #94a3b8; font-size: 16px; }
+        .empty-state i { font-size: 48px; margin-bottom: 15px; display: block; }
+
+        .logout-wrapper { display: flex; justify-content: center; margin: 35px 0 10px; gap: 15px; }
+        .btn-logout { display: inline-flex; align-items: center; gap: 10px; padding: 12px 28px; background: #133b6e; color: white; text-decoration: none; border-radius: 12px; font-size: 15px; font-weight: 600; transition: all .25s; }
+        .btn-logout:hover { background: #072736; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+<header class="dashboard-header">
+    <div class="header-inner">
+        <img src="/logo.png" alt="Logo" class="logo">
+        <div class="header-text">
+            <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+            <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+        </div>
+        <div class="nav-actions">
+            {% if user and user.role == 'admin' %}
+                <a href="/admin_dashboard.php" class="btn-nav-back">หน้าหลักผู้ดูแลระบบ</a>
+            {% else %}
+                <a href="/teacher_dashboard.php" class="btn-nav-back">หน้าหลักอาจารย์</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<main class="info-main">
+    <div class="section-header">
+        <h2 class="section-title">
+            <i class="fa-solid fa-file-circle-check"></i> ตรวจเอกสารนักศึกษา
+        </h2>
+        {% if pending_students %}
+        <span class="count-badge">รอตรวจ {{ pending_students | length }} ราย</span>
+        {% endif %}
+    </div>
+
+    <div class="check-container">
+        {% if not pending_students %}
+            <div class="empty-state">
+                <i class="fa-regular fa-circle-check"></i>
+                ไม่มีนักศึกษาที่รอการตรวจสอบเอกสารในขณะนี้
+            </div>
+        {% else %}
+            {% for s in pending_students %}
+            <div class="check-item">
+                <div class="item-num">{{ loop.index }}</div>
+                <div class="item-name">{{ s.fullname or '-' }}</div>
+                <div class="item-id">รหัสนักศึกษา {{ s.student_id }}</div>
+                <div class="badge-status">รอตรวจสอบ</div>
+                <a href="/teacher_check_std.php?id={{ s.student_id }}" class="btn-check-doc">
+                    <i class="fa-solid fa-folder-open"></i> ดูเอกสาร
+                </a>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="logout-wrapper">
+        {% if user and user.role == 'admin' %}
+            <a href="/admin_dashboard.php" class="btn-logout"><i class="fa-solid fa-house"></i> กลับไปที่หน้าหลัก</a>
+        {% else %}
+            <a href="/teacher_dashboard.php" class="btn-logout"><i class="fa-solid fa-house"></i> กลับไปที่หน้าหลัก</a>
+        {% endif %}
+    </div>
+</main>
+</body>
+</html>

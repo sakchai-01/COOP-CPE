@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ผลตรวจเอกสารนักศึกษา - ระบบสหกิจศึกษา</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary-blue: #0b1f3c; --secondary-blue: #1e3a68; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sarabun', sans-serif; background: #cbd5e1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .dashboard-header { width: 100%; background: var(--primary-blue); color: white; padding: 20px 0; margin-bottom: 40px; }
+        .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 0 20px; gap: 20px; }
+        .logo { width: 80px; }
+        .header-text h1 { font-size: 24px; }
+        .header-text p { font-size: 18px; opacity: 0.9; }
+
+        /* Filter tabs */
+        .filter-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .filter-tab { padding: 8px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 13px; background: rgba(255,255,255,0.5); color: var(--secondary-blue); border: 1px solid rgba(0,0,0,0.1); transition: all 0.2s; }
+        .filter-tab:hover, .filter-tab.active { background: var(--secondary-blue); color: white; }
+
+        .results-container { width: 90%; max-width: 1000px; background: rgba(255,255,255,0.95); border-radius: 30px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid #e2e8f0; }
+        .results-header-left { display: flex; align-items: center; gap: 15px; }
+        .results-header i { font-size: 32px; color: #94a3b8; }
+        .results-header h2 { font-size: 22px; color: #475569; }
+        .btn-export { background: #3f9f75; color: white; padding: 10px 25px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 10px; transition: all 0.3s; box-shadow: 0 6px 14px rgba(63,159,117,0.18); }
+        .btn-export:hover { background: #2d7a59; }
+
+        .result-list { display: flex; flex-direction: column; gap: 15px; }
+        .result-item { display: flex; align-items: center; background: #e0f2fe; padding: 15px 25px; border-radius: 50px; gap: 20px; transition: transform 0.2s; }
+        .result-item:hover { transform: scale(1.01); }
+        .item-num { width: 35px; height: 35px; background: #0ea5e9; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0; }
+        .item-info { flex: 1; display: flex; align-items: center; gap: 30px; flex-wrap: wrap; }
+        .info-name { font-weight: 600; color: #1e293b; min-width: 150px; }
+        .info-id { color: #475569; min-width: 160px; }
+        .info-date { color: #64748b; font-size: 13px; }
+        .status-badge { padding: 8px 24px; border-radius: 12px; color: white; font-weight: 700; text-align: center; min-width: 110px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .status-badge.pass { background: #4f9d2f; }
+        .status-badge.fail { background: #d95b5b; }
+        .status-badge.pending { background: #e7b72f; color: #5f4307; }
+
+        .no-data { text-align: center; padding: 60px; color: #64748b; font-style: italic; font-size: 16px; }
+        .back-home { background: var(--primary-blue); color: white; padding: 12px 30px; border-radius: 15px; text-decoration: none; display: flex; align-items: center; gap: 10px; font-weight: 700; margin-bottom: 50px; transition: background 0.2s; }
+        .back-home:hover { background: #2c5282; }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="header-inner">
+            <img src="/logo.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filter tabs -->
+    <div class="filter-tabs">
+        <a href="/teacher_review_results.php" class="filter-tab {{ 'active' if not status_filter else '' }}">เอกสารทั้งหมด</a>
+        <a href="/teacher_review_results.php?status=passed" class="filter-tab {{ 'active' if status_filter == 'passed' else '' }}">เอกสารที่ผ่าน</a>
+        <a href="/teacher_review_results.php?status=pending" class="filter-tab {{ 'active' if status_filter == 'pending' else '' }}">เอกสารรอตรวจ</a>
+        <a href="/teacher_review_results.php?status=failed" class="filter-tab {{ 'active' if status_filter == 'failed' else '' }}">เอกสารที่ไม่ผ่าน</a>
+    </div>
+
+    <div class="results-container">
+        <div class="results-header">
+            <div class="results-header-left">
+                <i class="fa-solid fa-file-circle-check"></i>
+                <h2>{{ page_title }}</h2>
+            </div>
+            <a href="/api/teacher/export-excel" class="btn-export">
+                <i class="fa-solid fa-file-excel"></i> ส่งออก Excel
+            </a>
+        </div>
+
+        <div class="result-list">
+            {% if students %}
+                {% for s in students %}
+                {% set st = s.get('app_status', 'pending') %}
+                <div class="result-item">
+                    <div class="item-num">{{ loop.index }}</div>
+                    <div class="item-info">
+                        <div class="info-name">{{ s.fullname or '-' }}</div>
+                        <div class="info-id">รหัสนักศึกษา {{ s.student_id }}</div>
+                        <div class="info-date"><i class="fa-solid fa-calendar"></i> {{ s.get('submit_at', '') or '-' }}</div>
+                    </div>
+                    {% if st == 'passed' %}
+                        <div class="status-badge pass">ผ่าน</div>
+                    {% elif st == 'failed' %}
+                        <div class="status-badge fail">ไม่ผ่าน</div>
+                    {% else %}
+                        <div class="status-badge pending">รอตรวจ</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-data">ยังไม่มีผลการตรวจเอกสารในขณะนี้</div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if user and user.role == 'admin' %}
+        <a href="/admin_dashboard.php" class="back-home"><i class="fa-solid fa-house"></i> กลับไปที่หน้าหลัก</a>
+    {% else %}
+        <a href="/teacher_dashboard.php" class="back-home"><i class="fa-solid fa-house"></i> กลับไปที่หน้าหลัก</a>
+    {% endif %}
+</body>
+</html>

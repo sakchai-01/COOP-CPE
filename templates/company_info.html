@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลสถานประกอบการ - ระบบสหกิจศึกษา</title>
+    <link rel="stylesheet" href="/company_info.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --primary-blue: #0b1f3c; --secondary-blue: #1e3a68; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Sarabun', sans-serif; background: linear-gradient(180deg, #f1f6fb 0%, #aabdd8 100%); min-height: 100vh; }
+        .dashboard-header { background: var(--primary-blue); padding: 15px 0; color: white; display: flex; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .header-inner { display: flex; align-items: center; gap: 20px; max-width: 1200px; width: 90%; justify-content: space-between; }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { width: 70px; height: auto; }
+        .header-text h1 { font-size: 20px; font-weight: 700; }
+        .header-text p { font-size: 14px; opacity: 0.9; }
+        .btn-top-back { background: rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+        .btn-top-back:hover { background: rgba(255,255,255,0.2); }
+        .company-main { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .title-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .title-bar h2 { font-size: 22px; font-weight: 700; color: var(--secondary-blue); }
+        /* Search bar */
+        .search-wrap { margin-bottom: 20px; }
+        .search-wrap input { width: 100%; max-width: 400px; padding: 10px 18px; border-radius: 30px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 14px; outline: none; }
+        .table-header-custom { display: grid; grid-template-columns: 2fr 1.5fr 2fr 1.5fr 0.8fr 1.2fr 0.5fr; background: var(--secondary-blue); color: white; padding: 14px 20px; border-radius: 14px 14px 0 0; font-weight: 700; font-size: 13px; gap: 10px; }
+        .company-list-container { background: white; border-radius: 0 0 20px 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+        .company-row-card { display: grid; grid-template-columns: 2fr 1.5fr 2fr 1.5fr 0.8fr 1.2fr 0.5fr; padding: 16px 20px; border-bottom: 1px solid #f1f5f9; align-items: center; gap: 10px; transition: background 0.2s; }
+        .company-row-card:hover { background: #f8fafc; }
+        .company-name { font-weight: 700; color: var(--secondary-blue); font-size: 14px; }
+        .contact-box { font-size: 13px; color: #475569; line-height: 1.8; }
+        .contact-box i { color: #0ea5e9; }
+        .qual-box { font-size: 12px; color: #475569; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .pos-box { font-size: 13px; color: #334155; font-weight: 600; }
+        .badge-quota, .badge-welfare { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge-welfare { background: #f0fdf4; color: #166534; }
+        .btn-detail-icon { background: #e0f2fe; color: #0369a1; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 13px; transition: all 0.2s; }
+        .btn-detail-icon:hover { background: #0369a1; color: white; }
+        .empty-state { text-align: center; padding: 60px; color: #94a3b8; font-size: 18px; }
+        @media(max-width: 900px) {
+            .table-header-custom, .company-row-card { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="header-inner">
+            <div class="header-left">
+                <img src="/logo.png" alt="Logo" class="logo">
+                <div class="header-text">
+                    <h1>ระบบสหกิจศึกษา คณะวิศวกรรมศาสตร์และเทคโนโลยีอุตสาหกรรม</h1>
+                    <p>Cooperative Education System Faculty of Engineering and Industrial Technology</p>
+                </div>
+            </div>
+            {% if user %}
+                {% if user.role == 'admin' %}
+                    <a href="/admin_dashboard.php" class="btn-top-back"><i class="fa-solid fa-house"></i> หน้าหลัก</a>
+                {% elif user.role == 'teacher' %}
+                    <a href="/teacher_dashboard.php" class="btn-top-back"><i class="fa-solid fa-house"></i> หน้าหลัก</a>
+                {% else %}
+                    <a href="/student_dashboard.php" class="btn-top-back"><i class="fa-solid fa-house"></i> หน้าหลัก</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="company-main">
+        <div class="title-bar">
+            <h2><i class="fa-solid fa-building-columns"></i> ข้อมูลสถานประกอบการ</h2>
+        </div>
+
+        <div class="search-wrap">
+            <input type="text" id="searchInput" placeholder="🔍 ค้นหาชื่อบริษัท..." oninput="filterCompanies()">
+        </div>
+
+        <div class="table-header-custom">
+            <div>ชื่อบริษัท</div>
+            <div>การติดต่อ</div>
+            <div>คุณสมบัติเบื้องต้น</div>
+            <div>ตำแหน่งที่รับ</div>
+            <div>จำนวน</div>
+            <div>สวัสดิการ</div>
+            <div></div>
+        </div>
+
+        <div class="company-list-container" id="companyList">
+            {% if companies %}
+                {% for c in companies %}
+                <div class="company-row-card" data-name="{{ c.name|lower }}">
+                    <div><div class="company-name">{{ c.name }}</div></div>
+                    <div>
+                        <div class="contact-box">
+                            <div><i class="fa-solid fa-phone"></i> {{ c.phone or '-' }}</div>
+                            <div><i class="fa-solid fa-envelope"></i> {{ c.email or '-' }}</div>
+                        </div>
+                    </div>
+                    <div><div class="qual-box">{{ c.qualifications or '-' }}</div></div>
+                    <div><div class="pos-box"><i class="fa-solid fa-briefcase"></i> {{ c.position or '-' }}</div></div>
+                    <div><span class="badge-quota">{{ c.quota or '-' }}</span></div>
+                    <div><span class="badge-welfare">{{ c.benefits or '-' }}</span></div>
+                    <div>
+                        <a href="/company_detail.php?id={{ c.id }}" class="btn-detail-icon" title="ดูรายละเอียด">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fa-solid fa-folder-open"></i><br>
+                    ไม่พบข้อมูลสถานประกอบการในขณะนี้
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        function filterCompanies() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.company-row-card').forEach(card => {
+                card.style.display = card.dataset.name.includes(q) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
