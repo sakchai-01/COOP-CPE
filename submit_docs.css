@@ -1,0 +1,192 @@
+:root {
+    --primary-blue: #0b1f3c;
+    --secondary-blue: #1e3a68;
+    --accent-blue: #3b82f6;
+    --bg-light: #f1f6fb;
+    --white: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --card-bg: #d9e6f7;
+    --btn-gray: #aabdd8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+/* Header */
+.dashboard-header {
+    background-color: var(--primary-blue);
+    padding: 15px 0;
+    color: var(--white);
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo { width: 90px; height: auto; }
+.header-text h1 { font-size: 24px; font-weight: 700; }
+.header-text p { font-size: 16px; opacity: 0.9; }
+
+/* Grid Layout */
+.submit-docs-main {
+    width: 100%;
+    max-width: 1200px; /* Increased for better 4-column fit */
+    margin: 0 auto;
+    padding: 0 20px 60px;
+}
+
+.docs-container {
+    background: var(--white);
+    border-radius: 40px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* Safer dynamic columns */
+    gap: 20px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.doc-card {
+    background: var(--card-bg);
+    border-radius: 25px;
+    padding: 25px 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    transition: transform 0.3s;
+    min-width: 0; /* Prevents expansion beyond grid track */
+    overflow: hidden; /* Contains children */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.doc-card:hover {
+    transform: translateY(-5px);
+}
+
+.doc-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 40px; /* Maintain consistent height */
+}
+
+.btn-upload-file {
+    background: var(--btn-gray);
+    color: #1e293b;
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.btn-upload-file:hover {
+    background: #95a9c5;
+}
+
+.doc-status.uploaded {
+    color: #059669;
+    font-weight: 700;
+    font-size: 11px;
+    display: block;
+    width: 100%;
+}
+
+.file-mini {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+}
+
+/* Footer Actions */
+.docs-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.btn-footer-back {
+    background: var(--secondary-blue);
+    color: var(--white);
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+}
+
+.btn-footer-submit {
+    background: var(--secondary-blue);
+    color: var(--white);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-footer-back:hover, .btn-footer-submit:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 1100px) {
+    .docs-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+    .docs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .docs-container { padding: 30px 20px; }
+}
+
+@media (max-width: 576px) {
+    .docs-grid { grid-template-columns: minmax(0, 1fr); }
+    .docs-footer { flex-direction: column; }
+    .header-text h1 { font-size: 20px; }
+}

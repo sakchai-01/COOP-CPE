@@ -1,0 +1,233 @@
+:root {
+    --primary-blue: #0b1f3c;
+    --secondary-blue: #1e3a68;
+    --accent-blue: #3b82f6;
+    --white: #ffffff;
+    --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+    --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    --btn-gray: #cccccc;
+    --text-dark: #1e293b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+/* Header */
+.dashboard-header {
+    background: var(--primary-blue);
+    padding: 15px 0;
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.logo {
+    width: 90px;
+    height: auto;
+}
+
+.header-text h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.header-text p {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* Main Layout */
+.dashboard-main {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.top-controls {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+/* Single Robust Academic Year Selector */
+.academic-year-select {
+    background-color: var(--secondary-blue);
+    color: white;
+    padding: 12px 45px 12px 25px;
+    border-radius: 30px;
+    border: 2px solid var(--secondary-blue);
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 16px 16px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
+    min-width: 160px;
+    margin-bottom: 25px;
+}
+
+.academic-year-select:hover {
+    background-color: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(11, 31, 60, 0.3);
+}
+
+.academic-year-select option {
+    background-color: white;
+    color: var(--primary-blue);
+    padding: 10px;
+}
+
+
+.dashboard-content {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Action Cards (Left) */
+.action-cards {
+    display: flex;
+    gap: 20px;
+    flex: 3;
+}
+
+.menu-card {
+    background: var(--white);
+    border-radius: 40px;
+    padding: 30px 20px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--card-shadow);
+    min-height: 380px;
+    transition: transform 0.3s ease;
+}
+
+.menu-card:hover { transform: translateY(-10px); }
+
+.card-img {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.card-btn {
+    background: var(--btn-gray);
+    color: #333;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    width: 85%;
+    display: block;
+    transition: background 0.2s;
+}
+
+.card-btn:hover { background: #bbb; }
+
+/* Stats Grid (Right) */
+.stats-grid {
+    flex: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--white);
+    border-radius: 35px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+}
+
+.stat-badge {
+    border: 2px solid;
+    padding: 2px 15px;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.stat-badge.total { border-color: #3b82f6; color: #3b82f6; } /* Blue for All */
+.stat-badge.passed { border-color: #10b981; color: #10b981; } /* Green for Passed */
+.stat-badge.pending { border-color: #f59e0b; color: #f59e0b; } /* Orange for Pending */
+.stat-badge.failed { border-color: #ef4444; color: #ef4444; } /* Red for Failed */
+
+.stat-value {
+    font-size: 60px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Logout */
+.logout-wrapper {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-logout {
+    background: var(--secondary-blue);
+    color: white;
+    padding: 12px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+}
+
+@media (max-width: 1100px) {
+    .dashboard-content { flex-direction: column; }
+    .action-cards { width: 100%; }
+}
+@media (max-width: 768px) {
+    .action-cards { flex-direction: column; }
+}

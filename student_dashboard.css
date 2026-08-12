@@ -1,0 +1,319 @@
+:root {
+    --primary-blue: #0b1f3c;
+    --bg-gradient: linear-gradient(180deg, #f1f6fb 0%, #aabdd8 100%);
+    --white: #ffffff;
+    --text-dark: #1e293b;
+    --btn-gray: #cecece;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header inherited style */
+.dashboard-header {
+    background-color: var(--primary-blue);
+    padding: 15px 0;
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 1200px;
+    width: 90%;
+}
+
+.logo {
+    width: 90px;
+    height: auto;
+}
+
+.header-text h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.header-text p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* Main content */
+.dashboard-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+}
+
+/* Background gear pattern placeholder - if we had a bg image */
+.dashboard-main::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/gears.png'); /* Subtle gear pattern */
+    opacity: 0.05;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.menu-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.menu-card {
+    background: var(--white);
+    border-radius: 30px;
+    padding: 30px 20px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    aspect-ratio: 1/1.2;
+}
+
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.card-img {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.card-img img {
+    max-width: 100%;
+    max-height: 140px;
+    object-fit: contain;
+}
+
+.card-btn {
+    background: #cccccc;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    width: 80%;
+    margin-bottom: 25px;
+    line-height: 1.2;
+    text-decoration: none; /* Add this since it's now an anchor */
+    display: flex; /* Add this to center text */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Logout button */
+.logout-wrapper {
+    margin-top: 50px;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-logout {
+    background: var(--primary-blue);
+    color: var(--white);
+    text-decoration: none;
+    padding: 12px 40px;
+    border-radius: 30px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    box-shadow: 0 5px 15px rgba(11, 31, 60, 0.3);
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn-logout:hover {
+    background: #1e3a68;
+    transform: scale(1.05);
+}
+
+/* Progress Timeline Section */
+.timeline-section {
+    width: 90%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.timeline-container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 20px;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    right: 40px;
+    height: 4px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.step-icon {
+    width: 44px;
+    height: 44px;
+    background: #fff;
+    border: 3px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #94a3b8;
+    transition: all 0.4s ease;
+}
+
+.step-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    text-align: center;
+    transition: all 0.4s ease;
+}
+
+/* Active/Completed States */
+.timeline-step.completed .step-icon {
+    background: #22c55e;
+    border-color: #22c55e;
+    color: white;
+}
+
+.timeline-step.completed .step-label {
+    color: #15803d;
+}
+
+.timeline-step.active .step-icon {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: white;
+    box-shadow: 0 0 0 5px rgba(11, 31, 60, 0.1);
+    animation: pulse-blue 2s infinite;
+}
+
+.timeline-step.active .step-label {
+    color: var(--primary-blue);
+    font-weight: 700;
+    transform: scale(1.05);
+}
+
+@keyframes pulse-blue {
+    0% { box-shadow: 0 0 0 0px rgba(11, 31, 60, 0.2); }
+    70% { box-shadow: 0 0 0 10px rgba(11, 31, 60, 0); }
+    100% { box-shadow: 0 0 0 0px rgba(11, 31, 60, 0); }
+}
+
+/* Timeline progress bar */
+.progress-line-fill {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    height: 4px;
+    background: linear-gradient(90deg, #22c55e, #3b82f6);
+    z-index: 0;
+    transition: width 1s ease;
+}
+
+@media (max-width: 768px) {
+    .timeline-container {
+        flex-direction: column;
+        gap: 30px;
+        padding-left: 30px;
+    }
+    .timeline-container::before {
+        width: 4px;
+        height: 100%;
+        top: 0;
+        left: 20px;
+    }
+    .progress-line-fill {
+        width: 4px !important;
+        height: var(--prog-height, 0);
+        left: 20px;
+        top: 0;
+    }
+    .timeline-step {
+        flex-direction: row;
+        gap: 20px;
+        align-items: center;
+    }
+    .step-label { text-align: left; }
+}
+
+@media (max-width: 768px) {
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .header-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+

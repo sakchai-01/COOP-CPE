@@ -1,0 +1,101 @@
+.download-content {
+    padding: 40px 0 80px;
+    background-color: var(--bg-light);
+}
+
+.main-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy-dark);
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.download-section {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    animation: slideIn 0.5s ease-out;
+    border: 1px solid #e2e8f0;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #fff;
+}
+
+.section-header i { font-size: 20px; }
+.section-header h3 { font-size: 18px; font-weight: 600; }
+
+/* Colors for sections with alternating navy shades */
+.section-before .section-header { background-color: #0b1f3c; } /* Navy Dark */
+.section-during .section-header { background-color: #1e3a68; } /* Navy Medium */
+.section-after .section-header { background-color: #3b82f6; }  /* Navy Light */
+
+/* Subtle background variation */
+.section-during { background-color: #f8fafc; }
+
+.section-body { padding: 10px 0; }
+
+.download-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    border-bottom: 1px solid #f0f4f8;
+    transition: background-color 0.2s;
+}
+
+.download-item:last-child { border-bottom: none; }
+.download-item:hover { background-color: #f1f5f9; }
+
+.item-info { display: flex; align-items: center; gap: 15px; }
+
+/* Color icons based on section navy shades */
+.section-before .item-info i { color: #0b1f3c; }
+.section-during .item-info i { color: #1e3a68; }
+.section-after .item-info i { color: #3b82f6; }
+
+.item-info i { font-size: 24px; }
+.file-name { font-size: 16px; font-weight: 600; color: #334155; }
+
+/* Download buttons with alternating navy shades */
+.btn-dl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.section-before .btn-dl { background-color: #1e3a68; }
+.section-during .btn-dl { background-color: #0b1f3c; }
+.section-after .btn-dl { background-color: #1e3a68; }
+
+.btn-dl:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    filter: brightness(1.1);
+}
+
+.btn-dl i { font-size: 16px; }
+
+@media (max-width: 768px) {
+    .download-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .btn-dl { width: 100%; justify-content: center; }
+}
